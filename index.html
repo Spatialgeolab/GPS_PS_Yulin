@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 1257px;
+            height: 813px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/0318_Yulin_PS_contour_over_2cm_1.js"></script>
+        <script src="data/GPS_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[23.065115056139657,119.1405398883981],[24.34998309879703,121.29214946503963]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_0318_Yulin_PS_contour_over_2cm_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">index</th>\
+                        <td>' + (feature.properties['index'] !== null ? autolinker.link(feature.properties['index'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>VEL_min</strong><br />' + (feature.properties['VEL_min'] !== null ? autolinker.link(feature.properties['VEL_min'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VEL_max</th>\
+                        <td>' + (feature.properties['VEL_max'] !== null ? autolinker.link(feature.properties['VEL_max'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">label</th>\
+                        <td>' + (feature.properties['label'] !== null ? autolinker.link(feature.properties['label'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_0318_Yulin_PS_contour_over_2cm_1_0(feature) {
+            if (feature.properties['VEL_min'] >= -70.000000 && feature.properties['VEL_min'] <= -60.000000 ) {
+                return {
+                pane: 'pane_0318_Yulin_PS_contour_over_2cm_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['VEL_min'] >= -60.000000 && feature.properties['VEL_min'] <= -50.000000 ) {
+                return {
+                pane: 'pane_0318_Yulin_PS_contour_over_2cm_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,174,97,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['VEL_min'] >= -50.000000 && feature.properties['VEL_min'] <= -40.000000 ) {
+                return {
+                pane: 'pane_0318_Yulin_PS_contour_over_2cm_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,191,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['VEL_min'] >= -40.000000 && feature.properties['VEL_min'] <= -30.000000 ) {
+                return {
+                pane: 'pane_0318_Yulin_PS_contour_over_2cm_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,238,178,1.0)',
+                interactive: false,
+            }
+            }
+        }
+        map.createPane('pane_0318_Yulin_PS_contour_over_2cm_1');
+        map.getPane('pane_0318_Yulin_PS_contour_over_2cm_1').style.zIndex = 401;
+        map.getPane('pane_0318_Yulin_PS_contour_over_2cm_1').style['mix-blend-mode'] = 'normal';
+        var layer_0318_Yulin_PS_contour_over_2cm_1 = new L.geoJson(json_0318_Yulin_PS_contour_over_2cm_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_0318_Yulin_PS_contour_over_2cm_1',
+            layerName: 'layer_0318_Yulin_PS_contour_over_2cm_1',
+            pane: 'pane_0318_Yulin_PS_contour_over_2cm_1',
+            onEachFeature: pop_0318_Yulin_PS_contour_over_2cm_1,
+            style: style_0318_Yulin_PS_contour_over_2cm_1_0,
+        });
+        bounds_group.addLayer(layer_0318_Yulin_PS_contour_over_2cm_1);
+        map.addLayer(layer_0318_Yulin_PS_contour_over_2cm_1);
+        function pop_GPS_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Name</strong><br />' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Image</strong><br />' + (feature.properties['Image'] !== null ? '<img src="images/' + String(feature.properties['Image']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_GPS_2_0() {
+            return {
+                pane: 'pane_GPS_2',
+                radius: 5.6,
+                opacity: 1,
+                color: 'rgba(255,251,1,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_GPS_2');
+        map.getPane('pane_GPS_2').style.zIndex = 402;
+        map.getPane('pane_GPS_2').style['mix-blend-mode'] = 'normal';
+        var layer_GPS_2 = new L.geoJson(json_GPS_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_GPS_2',
+            layerName: 'layer_GPS_2',
+            pane: 'pane_GPS_2',
+            onEachFeature: pop_GPS_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_GPS_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_GPS_2);
+        map.addLayer(layer_GPS_2);
+        setBounds();
+        var i = 0;
+        layer_GPS_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_GPS_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_GPS_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_GPS_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_GPS_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_GPS_2]);
+        });
+        </script>
+    </body>
+</html>
