@@ -8,8 +8,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/filter.css">
-<link rel="stylesheet" href="css/nouislider.min.css">
         <style>
         #map {
             width: 1257px;
@@ -30,15 +28,12 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/tailDT.js"></script>
-<script src="js/nouislider.min.js"></script>
-<script src="js/wNumb.js"></script>
         <script src="data/0318_Yulin_PS_contour_over_2cm_1.js"></script>
         <script src="data/GPS_2.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[23.163944488020757,119.38203512518533],[24.22036149668366,121.15043765000891]]);
+        }).fitBounds([[23.065115056139657,119.1405398883981],[24.34998309879703,121.29214946503963]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -162,19 +157,16 @@
         function pop_GPS_2(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">fid</th>\
-                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Name</strong><br />' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Image</th>\
-                        <td>' + (feature.properties['Image'] !== null ? '<img src="images/' + String(feature.properties['Image']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                        <td colspan="2"><strong>Image</strong><br />' + (feature.properties['Image'] !== null ? '<img src="images/' + String(feature.properties['Image']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
                     </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400,maxWidth:400});
+            layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
         function style_GPS_2_0() {
@@ -227,242 +219,6 @@
               addLabel(layer, i);
               i++;
         });
-        var mapDiv = document.getElementById('map');
-        var row = document.createElement('div');
-        row.className="row";
-        row.id="all";
-        row.style.height = "100%";
-        var col1 = document.createElement('div');
-        col1.className="col9";
-        col1.id = "mapWindow";
-        col1.style.height = "99%";
-        col1.style.width = "80%";
-        col1.style.display = "inline-block";
-        var col2 = document.createElement('div');
-        col2.className="col3";
-        col2.id = "menu";
-        col2.style.display = "inline-block";
-        mapDiv.parentNode.insertBefore(row, mapDiv);
-        document.getElementById("all").appendChild(col1);
-        document.getElementById("all").appendChild(col2);
-        col1.appendChild(mapDiv)
-        var Filters = {"Name": "str"};
-        function filterFunc() {
-          map.eachLayer(function(lyr){
-          if ("options" in lyr && "dataVar" in lyr["options"]){
-            features = this[lyr["options"]["dataVar"]].features.slice(0);
-            try{
-              for (key in Filters){
-                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
-                if (Filters[key] == "str" || Filters[key] == "bool"){
-                  var selection = [];
-                  var options = document.getElementById("sel_" + keyS).options
-                  for (var i=0; i < options.length; i++) {
-                    if (options[i].selected) selection.push(options[i].value);
-                  }
-                    try{
-                      if (key in features[0].properties){
-                        for (i = features.length - 1;
-                          i >= 0; --i){
-                          if (selection.indexOf(
-                          features[i].properties[key])<0
-                          && selection.length>0) {
-                          features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                  }
-                }
-                if (Filters[key] == "int"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (parseInt(features[i].properties[key])
-                          < sliderVals[0]
-                          || parseInt(features[i].properties[key])
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "real"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (features[i].properties[key]
-                          < sliderVals[0]
-                          || features[i].properties[key]
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "date"
-                  || Filters[key] == "datetime"
-                  || Filters[key] == "time"){
-                  try{
-                    if (key in features[0].properties){
-                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
-                      startdate = document.getElementById("dat_" +
-                        HTMLkey + "_date1").value.replace(" ", "T");
-                      enddate = document.getElementById("dat_" +
-                        HTMLkey + "_date2").value.replace(" ", "T");
-                      for (i = features.length - 1; i >= 0; --i){
-                        if (features[i].properties[key] < startdate
-                          || features[i].properties[key] > enddate){
-                          features.splice(i,1);
-                        }
-                      }
-                    }
-                  } catch(err){
-                  }
-                }
-              }
-            } catch(err){
-            }
-          this[lyr["options"]["layerName"]].clearLayers();
-          this[lyr["options"]["layerName"]].addData(features);
-        var i = 0;
-        layer_GPS_2.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_GPS_2'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
-          }
-          })
-        }
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_Name = document.createElement('div');
-            div_Name.id = "div_Name";
-            div_Name.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Name);
-            sel_Name = document.createElement('select');
-            sel_Name.multiple = true;
-            sel_Name.size = 10;
-            sel_Name.id = "sel_Name";
-            var Name_options_str = "<option value='' unselected></option>";
-            sel_Name.onchange = function(){filterFunc()};
-            Name_options_str  += '<option value="BDES">BDES</option>';
-            Name_options_str  += '<option value="CAOT">CAOT</option>';
-            Name_options_str  += '<option value="CHIA">CHIA</option>';
-            Name_options_str  += '<option value="CHSG">CHSG</option>';
-            Name_options_str  += '<option value="CHUA">CHUA</option>';
-            Name_options_str  += '<option value="CHUK">CHUK</option>';
-            Name_options_str  += '<option value="CHYI">CHYI</option>';
-            Name_options_str  += '<option value="CWEN">CWEN</option>';
-            Name_options_str  += '<option value="DNAN">DNAN</option>';
-            Name_options_str  += '<option value="ERLN">ERLN</option>';
-            Name_options_str  += '<option value="FNGU">FNGU</option>';
-            Name_options_str  += '<option value="FRES">FRES</option>';
-            Name_options_str  += '<option value="FUNY">FUNY</option>';
-            Name_options_str  += '<option value="G811">G811</option>';
-            Name_options_str  += '<option value="GFES">GFES</option>';
-            Name_options_str  += '<option value="GKFM">GKFM</option>';
-            Name_options_str  += '<option value="GLES">GLES</option>';
-            Name_options_str  += '<option value="GS05">GS05</option>';
-            Name_options_str  += '<option value="GS06">GS06</option>';
-            Name_options_str  += '<option value="GS17">GS17</option>';
-            Name_options_str  += '<option value="GS18">GS18</option>';
-            Name_options_str  += '<option value="GS21">GS21</option>';
-            Name_options_str  += '<option value="GS22">GS22</option>';
-            Name_options_str  += '<option value="GS23">GS23</option>';
-            Name_options_str  += '<option value="GS24">GS24</option>';
-            Name_options_str  += '<option value="GS25">GS25</option>';
-            Name_options_str  += '<option value="GS26">GS26</option>';
-            Name_options_str  += '<option value="GS27">GS27</option>';
-            Name_options_str  += '<option value="GS39">GS39</option>';
-            Name_options_str  += '<option value="GS41">GS41</option>';
-            Name_options_str  += '<option value="GS43">GS43</option>';
-            Name_options_str  += '<option value="GS44">GS44</option>';
-            Name_options_str  += '<option value="GS68">GS68</option>';
-            Name_options_str  += '<option value="GS83">GS83</option>';
-            Name_options_str  += '<option value="GUKN">GUKN</option>';
-            Name_options_str  += '<option value="HLES">HLES</option>';
-            Name_options_str  += '<option value="HNES">HNES</option>';
-            Name_options_str  += '<option value="HOKN">HOKN</option>';
-            Name_options_str  += '<option value="HUWE">HUWE</option>';
-            Name_options_str  += '<option value="ICHU">ICHU</option>';
-            Name_options_str  += '<option value="JHCI">JHCI</option>';
-            Name_options_str  += '<option value="JHSN">JHSN</option>';
-            Name_options_str  += '<option value="JONP">JONP</option>';
-            Name_options_str  += '<option value="JSAN">JSAN</option>';
-            Name_options_str  += '<option value="JUCI">JUCI</option>';
-            Name_options_str  += '<option value="KAWN">KAWN</option>';
-            Name_options_str  += '<option value="KTES">KTES</option>';
-            Name_options_str  += '<option value="KZN1">KZN1</option>';
-            Name_options_str  += '<option value="LNJS">LNJS</option>';
-            Name_options_str  += '<option value="LSB0">LSB0</option>';
-            Name_options_str  += '<option value="LSBA">LSBA</option>';
-            Name_options_str  += '<option value="LUKN">LUKN</option>';
-            Name_options_str  += '<option value="MDES">MDES</option>';
-            Name_options_str  += '<option value="MSPK">MSPK</option>';
-            Name_options_str  += '<option value="NJES">NJES</option>';
-            Name_options_str  += '<option value="NTUH">NTUH</option>';
-            Name_options_str  += '<option value="PEI1">PEI1</option>';
-            Name_options_str  += '<option value="PINT">PINT</option>';
-            Name_options_str  += '<option value="PKGM">PKGM</option>';
-            Name_options_str  += '<option value="PUS2">PUS2</option>';
-            Name_options_str  += '<option value="RENI">RENI</option>';
-            Name_options_str  += '<option value="S011">S011</option>';
-            Name_options_str  += '<option value="S103">S103</option>';
-            Name_options_str  += '<option value="SCES">SCES</option>';
-            Name_options_str  += '<option value="SHLU">SHLU</option>';
-            Name_options_str  += '<option value="SJES">SJES</option>';
-            Name_options_str  += '<option value="SJPU">SJPU</option>';
-            Name_options_str  += '<option value="SLES">SLES</option>';
-            Name_options_str  += '<option value="SSES">SSES</option>';
-            Name_options_str  += '<option value="SSUN">SSUN</option>';
-            Name_options_str  += '<option value="STES">STES</option>';
-            Name_options_str  += '<option value="SUAN">SUAN</option>';
-            Name_options_str  += '<option value="TASI">TASI</option>';
-            Name_options_str  += '<option value="TKJS">TKJS</option>';
-            Name_options_str  += '<option value="TUNS">TUNS</option>';
-            Name_options_str  += '<option value="VR01">VR01</option>';
-            Name_options_str  += '<option value="VR02">VR02</option>';
-            Name_options_str  += '<option value="VR03">VR03</option>';
-            Name_options_str  += '<option value="W021">W021</option>';
-            Name_options_str  += '<option value="WFEN">WFEN</option>';
-            Name_options_str  += '<option value="WUST">WUST</option>';
-            Name_options_str  += '<option value="YCES">YCES</option>';
-            Name_options_str  += '<option value="YOKN">YOKN</option>';
-            Name_options_str  += '<option value="YSLL">YSLL</option>';
-            Name_options_str  += '<option value="YWJS">YWJS</option>';
-            sel_Name.innerHTML = Name_options_str;
-            div_Name.appendChild(sel_Name);
-            var lab_Name = document.createElement('div');
-            lab_Name.innerHTML = 'Name';
-            lab_Name.className = 'filterlabel';
-            div_Name.appendChild(lab_Name);
-            var reset_Name = document.createElement('div');
-            reset_Name.innerHTML = 'clear filter';
-            reset_Name.className = 'filterlabel';
-            reset_Name.onclick = function() {
-                var options = document.getElementById("sel_Name").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_Name.appendChild(reset_Name);
         resetLabels([layer_GPS_2]);
         map.on("zoomend", function(){
             resetLabels([layer_GPS_2]);
